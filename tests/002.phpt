@@ -84,7 +84,7 @@ array(2) {
     ["error"]=>
     int(0)
     ["size"]=>
-    int(13%d)
+    int(1340)
   }
   ["composer"]=>
   array(5) {

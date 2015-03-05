@@ -80,11 +80,11 @@ array(2) {
     ["type"]=>
     string(24) "application/octet-stream"
     ["tmp_name"]=>
-    string(66) "%sphp%s"
+    string(%d) "%sphp%s"
     ["error"]=>
     int(0)
     ["size"]=>
-    int(1353)
+    int(13%d)
   }
   ["composer"]=>
   array(5) {
@@ -93,7 +93,7 @@ array(2) {
     ["type"]=>
     string(24) "application/octet-stream"
     ["tmp_name"]=>
-    string(66) "%sphp%s"
+    string(%d) "%sphp%s"
     ["error"]=>
     int(0)
     ["size"]=>

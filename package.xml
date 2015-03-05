@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
+ xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="
+  http://pear.php.net/dtd/tasks-1.0
+  http://pear.php.net/dtd/tasks-1.0.xsd
+  http://pear.php.net/dtd/package-2.0
+  http://pear.php.net/dtd/package-2.0.xsd">
+ <name>apfd</name>
+ <channel>pecl.php.net</channel>
+ <summary>Always Populate Form Data</summary>
+ <description><![CDATA[
+This tiny extension lets PHP's post handler parse `multipart/form-data` and
+`application/x-www-form-urlencoded` (or any other customly registered form data
+handler, like "json_post") without regard to the request's request method.
+
+This extension does not provide any INI entries, constants, functions or classes.
+
+]]></description>
+ <lead>
+  <name>Michael Wallner</name>
+  <user>mike</user>
+  <email>mike@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2015-03-01</date>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license>BSD, revised</license>
+ <notes><![CDATA[
+* Split off pecl_http
+]]></notes>
+ <contents>
+  <dir name="/">
+   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="CREDITS"/>
+   <file role="src" name="config.m4"/>
+   <file role="src" name="config.w32"/>
+
+   <file role="src" name="php_apfd.h"/>
+   <file role="src" name="php_apfd.c"/>
+
+   <dir name="tests">
+     <file role="test" name="001.phpt"/>
+     <file role="test" name="002.phpt"/>
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>apfd</providesextension>
+ <extsrcrelease/>
+ <changelog />
+</package>

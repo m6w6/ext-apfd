@@ -24,13 +24,13 @@ This extension does not provide any INI entries, constants, functions or classes
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2015-03-01</date>
+ <date>2015-03-10</date>
  <version>
-  <release>1.0.0</release>
+  <release>1.0.0RC1</release>
   <api>1.0.0</api>
  </version>
  <stability>
-  <release>stable</release>
+  <release>beta</release>
   <api>stable</api>
  </stability>
  <license>BSD, revised</license>

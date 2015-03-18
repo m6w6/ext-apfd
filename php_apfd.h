@@ -16,7 +16,7 @@
 extern zend_module_entry apfd_module_entry;
 #define phpext_apfd_ptr &apfd_module_entry
 
-#define PHP_APFD_VERSION "1.0.0RC1"
+#define PHP_APFD_VERSION "1.0.0"
 
 #ifdef PHP_WIN32
 #	define PHP_APFD_API __declspec(dllexport)

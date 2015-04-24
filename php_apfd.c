@@ -77,19 +77,15 @@ PHP_RINIT_FUNCTION(apfd)
 {
 	/* populate form data on non-POST requests */
 	if (SG(request_info).request_method && strcasecmp(SG(request_info).request_method, "POST") && SG(request_info).content_type && *SG(request_info).content_type) {
-		char *ct_str = zend_str_tolower_dup(SG(request_info).content_type, strlen(SG(request_info).content_type));
-		size_t ct_end = strcspn(ct_str, ";, ");
+		char *ct_str, *ct_dup = estrdup(SG(request_info).content_type);
+		size_t ct_end = strcspn(ct_dup, ";, ");
 		sapi_post_entry *post_entry = NULL;
-		char delim;
 
-		SG(request_info).content_type_dup = ct_str;
+		SG(request_info).content_type_dup = ct_dup;
 
-		delim = ct_str[ct_end];
-		ct_str[ct_end] = '\0';
+		ct_str = zend_str_tolower_dup(ct_dup, ct_end);
 		if ((post_entry = apfd_get_post_entry(ct_str, ct_end TSRMLS_CC))) {
 			zval *files = apfd_backup_files(TSRMLS_C);
-
-			ct_str[ct_end] = delim;
 
 			if (post_entry) {
 				SG(request_info).post_entry = post_entry;
@@ -110,6 +106,7 @@ PHP_RINIT_FUNCTION(apfd)
 			 */
 			apfd_update_files(files TSRMLS_CC);
 		}
+		efree(ct_str);
 
 		if (SG(request_info).content_type_dup) {
 			efree(SG(request_info).content_type_dup);

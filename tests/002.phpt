@@ -62,6 +62,10 @@ Content-Type: application/octet-stream
     }
 }
 
+------------------------------6e182425881c
+Content-Disposition: form-data; name="user"
+
+mike
 ------------------------------6e182425881c--
 --FILE--
 <?php
@@ -70,7 +74,9 @@ var_dump($_POST, $_FILES);
 
 ?>
 --EXPECTF--
-array(0) {
+array(1) {
+  ["user"]=>
+  string(4) "mike"
 }
 array(2) {
   ["LICENSE"]=>

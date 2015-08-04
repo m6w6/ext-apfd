@@ -1,6 +1,6 @@
 # PECL :: apfd
 
-Always Populate Form Data
+Always Populate Form Data [![Build Status](https://travis-ci.org/m6w6/ext-apfd.svg?branch=master)](https://travis-ci.org/m6w6/ext-apfd)
 
 ## About
 

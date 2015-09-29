@@ -33,14 +33,18 @@ This extension does not provide any INI entries, constants, functions or classes
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license>BSD, revised</license>
+ <license uri="http://copyfree.org/content/standard/licenses/2bsd/license.txt">BSD-2-Clause</license>
  <notes><![CDATA[
 * Fix bug where non-POST payloads with mixed case boundaries would not be parsed
 ]]></notes>
  <contents>
   <dir name="/">
-   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="AUTHORS"/>
+   <file role="doc" name="CONTRIBUTING.md"/>
    <file role="doc" name="CREDITS"/>
+   <file role="doc" name="LICENSE"/>
+   <file role="doc" name="README.md"/>
+   <file role="doc" name="THANKS"/>
    <file role="src" name="config.m4"/>
    <file role="src" name="config.w32"/>
 

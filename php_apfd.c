@@ -23,27 +23,47 @@
 
 #if PHP_VERSION_ID >= 70000
 
+struct apfd {
+	zval post;
+	zval files;
+};
+
 #define APFD_SG(t) &PG(http_globals)[t]
 static inline sapi_post_entry *apfd_get_post_entry(const char *ct_str, size_t ct_len)
 {
 	return zend_hash_str_find_ptr(&SG(known_post_content_types), ct_str, ct_len);
 }
 
-static inline zval *apfd_backup_files(void)
+static inline void apfd_backup(struct apfd *apfd)
 {
 	if (SG(rfc1867_uploaded_files)) {
 		destroy_uploaded_files_hash();
 	}
-	return NULL;
+
+	zval_ptr_dtor(APFD_SG(TRACK_VARS_POST));
+	array_init(&apfd->post);
+	ZVAL_COPY_VALUE(APFD_SG(TRACK_VARS_POST), &apfd->post);
+
+	zval_ptr_dtor(APFD_SG(TRACK_VARS_FILES));
+	array_init(&apfd->files);
+	ZVAL_COPY_VALUE(APFD_SG(TRACK_VARS_FILES), &apfd->files);
 }
 
-static inline void apfd_update_files(zval *files)
+static inline void apfd_update(struct apfd *apfd)
 {
-	Z_TRY_ADDREF_P(APFD_SG(TRACK_VARS_FILES));
+	zend_hash_str_update(&EG(symbol_table), "_POST", sizeof("_POST")-1, APFD_SG(TRACK_VARS_POST));
+	Z_TRY_ADDREF_P(APFD_SG(TRACK_VARS_POST));
+
 	zend_hash_str_update(&EG(symbol_table), "_FILES", sizeof("_FILES")-1, APFD_SG(TRACK_VARS_FILES));
+	Z_TRY_ADDREF_P(APFD_SG(TRACK_VARS_FILES));
 }
 
 #else
+
+struct apfd {
+	zval *post;
+	zval *files;
+};
 
 #define APFD_SG(t) PG(http_globals)[t]
 static inline sapi_post_entry *apfd_get_post_entry(const char *ct_str, size_t ct_len TSRMLS_DC)
@@ -56,18 +76,19 @@ static inline sapi_post_entry *apfd_get_post_entry(const char *ct_str, size_t ct
 	return NULL;
 }
 
-static inline zval *apfd_backup_files(TSRMLS_D)
+static inline void apfd_backup(struct apfd *apfd TSRMLS_DC)
 {
-	return APFD_SG(TRACK_VARS_FILES);
+	apfd->post = APFD_SG(TRACK_VARS_POST);
+	apfd->files = APFD_SG(TRACK_VARS_FILES);
 }
 
-static inline void apfd_update_files(zval *files TSRMLS_DC)
+static inline void apfd_update(struct apfd *apfd TSRMLS_DC)
 {
-	if (files != APFD_SG(TRACK_VARS_FILES) && APFD_SG(TRACK_VARS_FILES)) {
+	if (apfd->files != APFD_SG(TRACK_VARS_FILES) && APFD_SG(TRACK_VARS_FILES)) {
 		Z_ADDREF_P(APFD_SG(TRACK_VARS_FILES));
 		zend_hash_update(&EG(symbol_table), "_FILES", sizeof("_FILES"), &APFD_SG(TRACK_VARS_FILES), sizeof(zval *), NULL);
-		if (files) {
-			zval_ptr_dtor(&files);
+		if (apfd->files) {
+			zval_ptr_dtor(&apfd->files);
 		}
 	}
 }
@@ -85,14 +106,14 @@ PHP_RINIT_FUNCTION(apfd)
 
 		ct_str = zend_str_tolower_dup(ct_dup, ct_end);
 		if ((post_entry = apfd_get_post_entry(ct_str, ct_end TSRMLS_CC))) {
-			zval *files = apfd_backup_files(TSRMLS_C);
+			struct apfd apfd;
 
-			if (post_entry) {
-				SG(request_info).post_entry = post_entry;
+			apfd_backup(&apfd TSRMLS_CC);
 
-				if (post_entry->post_reader) {
-					post_entry->post_reader(TSRMLS_C);
-				}
+			SG(request_info).post_entry = post_entry;
+
+			if (post_entry->post_reader) {
+				post_entry->post_reader(TSRMLS_C);
 			}
 
 			if (sapi_module.default_post_reader) {
@@ -101,10 +122,7 @@ PHP_RINIT_FUNCTION(apfd)
 
 			sapi_handle_post(APFD_SG(TRACK_VARS_POST) TSRMLS_CC);
 
-			/*
-			 * the rfc1867 handler is an awkward buddy
-			 */
-			apfd_update_files(files TSRMLS_CC);
+			apfd_update(&apfd TSRMLS_CC);
 		}
 		efree(ct_str);
 

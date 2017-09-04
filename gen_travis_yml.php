@@ -8,6 +8,7 @@ addons:
   packages:
    - php5-cli
    - php-pear
+   - valgrind
 
 env:
  matrix:

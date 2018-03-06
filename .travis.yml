@@ -24,7 +24,7 @@ env:
   - PHP=7.2 enable_debug=yes enable_maintainer_zts=no
   - PHP=7.2 enable_debug=no enable_maintainer_zts=yes
   - PHP=7.2 enable_debug=yes enable_maintainer_zts=yes
-  - CFLAGS='-O0 -g --profile' CXXFLAGS='-O0 -g --profile' PHP=7.2
+  - CFLAGS='-O0 -g --coverage' CXXFLAGS='-O0 -g --coverage' PHP=7.2
 
 cache:
  directories:

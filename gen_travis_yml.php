@@ -30,8 +30,8 @@ $env = $gen([
 	"enable_debug",
 	"enable_maintainer_zts"
 ], [
-	"CFLAGS" => "'-O0 -g --profile'",
-	"CXXFLAGS" => "'-O0 -g --profile'",
+	"CFLAGS" => "'-O0 -g --coverage'",
+	"CXXFLAGS" => "'-O0 -g --coverage'",
 	"PHP" => $cur,
 ]);
 foreach ($env as $grp) {

@@ -16,9 +16,7 @@ compiler:
 
 env:
  matrix:
-  - PHP=5.4 enable_debug=yes
-  - PHP=5.5 enable_debug=yes
-  - PHP=5.6 enable_debug=yes
+  - PHP=5.6 enable_debug=yes enable_maintainer_zts=yes
   - PHP=7.0 enable_debug=yes enable_maintainer_zts=yes
   - PHP=7.1 enable_debug=yes enable_maintainer_zts=yes
   - PHP=master enable_debug=yes enable_maintainer_zts=yes

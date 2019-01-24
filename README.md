@@ -16,7 +16,7 @@ See the [online markdown reference](https://mdref.m6w6.name/apfd).
 ### PHARext
 
 Watch out for [PECL replicates](https://replicator.pharext.org?apfd)
-and pharext packages attached to [releases](./releases).
+and pharext packages attached to [releases](https://github.com/m6w6/ext-apfd/releases).
 
 ### Checkout
 

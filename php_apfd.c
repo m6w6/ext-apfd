@@ -96,6 +96,10 @@ static inline void apfd_update(struct apfd *apfd TSRMLS_DC)
 
 PHP_RINIT_FUNCTION(apfd)
 {
+#ifndef TSRMLS_C
+# define TSRMLS_C
+# define TSRMLS_CC
+#endif
 	/* populate form data on non-POST requests */
 	if (SG(request_info).request_method && strcasecmp(SG(request_info).request_method, "POST") && SG(request_info).content_type && *SG(request_info).content_type) {
 		char *ct_str, *ct_dup = estrdup(SG(request_info).content_type);

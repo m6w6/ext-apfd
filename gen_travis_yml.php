@@ -15,10 +15,10 @@ env:
  matrix:
 <?php
 
-$cur = "7.3";
+$cur = "7.4";
 $gen = include "./travis/pecl/gen-matrix.php";
 $env = $gen([
-	"PHP" => ["5.6", "7.0", "7.1", "7.2", "7.4", "master"],
+	"PHP" => ["5.6", "7.0", "7.1", "7.2", "7.3", "master"],
 	"enable_debug" => "yes",
 	"enable_maintainer_zts" => "yes",
 ], [

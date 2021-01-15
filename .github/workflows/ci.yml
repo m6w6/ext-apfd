@@ -308,8 +308,8 @@ jobs:
   cur-cov-0:
     name: cur-cov-0
     env:
-      CFLAGS: "'-O0 -g --coverage'"
-      CXXFLAGS: "'-O0 -g --coverage'"
+      CFLAGS: "-O0 -g --coverage"
+      CXXFLAGS: "-O0 -g --coverage"
       PHP: "8.0"
     runs-on: ubuntu-20.04
     steps:
@@ -334,6 +334,6 @@ jobs:
       - name: Coverage
         if: success()
         run: |
-          cd src/.libs
+          cd .libs
           bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
 

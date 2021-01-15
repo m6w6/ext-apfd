@@ -29,8 +29,8 @@ $job = $gen->github([
 	"enable_zts",
 ],
 "cur-cov" => [
-	"CFLAGS" => "'-O0 -g --coverage'",
-	"CXXFLAGS" => "'-O0 -g --coverage'",
+	"CFLAGS" => "-O0 -g --coverage",
+	"CXXFLAGS" => "-O0 -g --coverage",
 	"PHP" => $cur,
 ]]);
 foreach ($job as $id => $env) {
@@ -68,7 +68,7 @@ foreach ($job as $id => $env) {
       - name: Coverage
         if: success()
         run: |
-          cd src/.libs
+          cd .libs
           bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
 <?php endif; ?>
 

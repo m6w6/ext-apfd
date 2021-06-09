@@ -70,6 +70,9 @@ mike
 --FILE--
 <?php
 
+foreach($_FILES as $i => $v) {
+	unset($_FILES[$i]['full_path']); // only in 8.1
+}
 var_dump($_POST, $_FILES);
 
 ?>

@@ -188,7 +188,7 @@ PHP_MINFO_FUNCTION(apfd)
 	php_info_print_table_end();
 	php_info_print_table_start();
 	php_info_print_table_header(3, "Content type", "Reader", "Handler");
-	apfd_enumerate_post_entries(apfd_enumerate_post_entry);
+	apfd_enumerate_post_entries(apfd_enumerate_post_entry TSRMLS_CC);
 	php_info_print_table_end();
 }
 

@@ -1,8 +1,10 @@
 --TEST--
 apfd - json_post PUT
---EXTENSIONS--
-apfd
-json_post
+--SKIPIF--
+<?php
+if (!extension_loaded("apfd") || !extension_loaded("json_post"))
+	die("skip need apfd and json_post support\n");
+?>
 --PUT--
 Content-type: application/json
 

@@ -19,7 +19,10 @@
 #include "ext/standard/info.h"
 #include "SAPI.h"
 #include "rfc1867.h"
+#include "php_content_types.h"
 #include "php_apfd.h"
+
+typedef void (*apfd_enumerate_post_entry_fn)(sapi_post_entry *);
 
 #if PHP_VERSION_ID >= 70000
 
@@ -32,6 +35,17 @@ struct apfd {
 static inline sapi_post_entry *apfd_get_post_entry(const char *ct_str, size_t ct_len)
 {
 	return zend_hash_str_find_ptr(&SG(known_post_content_types), ct_str, ct_len);
+}
+
+static inline void apfd_enumerate_post_entries(apfd_enumerate_post_entry_fn fn)
+{
+	sapi_post_entry *pe;
+
+	ZEND_HASH_FOREACH_PTR(&SG(known_post_content_types), pe)
+	{
+		fn(pe);
+	}
+	ZEND_HASH_FOREACH_END();
 }
 
 static inline void apfd_backup(struct apfd *apfd)
@@ -76,6 +90,21 @@ static inline sapi_post_entry *apfd_get_post_entry(const char *ct_str, size_t ct
 	return NULL;
 }
 
+static inline void apfd_enumerate_post_entries(apfd_enumerate_post_entry_fn fn TSRMLS_DC)
+{
+	HashPosition pos;
+	HashTable *ht = &SG(known_post_content_types);
+	sapi_post_entry *pe;
+
+	for (
+		zend_hash_internal_pointer_reset_ex(ht, &pos);
+		zend_hash_get_current_data_ex(ht, (void **) &pe, &pos) == SUCCESS;
+		zend_hash_move_forward_ex(ht, &pos)
+	) {
+		fn(pe);
+	}
+}
+
 static inline void apfd_backup(struct apfd *apfd TSRMLS_DC)
 {
 	apfd->post = APFD_SG(TRACK_VARS_POST);
@@ -100,6 +129,7 @@ PHP_RINIT_FUNCTION(apfd)
 # define TSRMLS_C
 # define TSRMLS_CC
 #endif
+
 	sapi_request_info *req = &SG(request_info);
 
 	/* populate form data on non-POST requests */
@@ -141,10 +171,24 @@ PHP_RINIT_FUNCTION(apfd)
 	return SUCCESS;
 }
 
+#define CUSTOM_OR_DEFAULT(ptr, def) ((ptr) && ((ptr) != (def)) ? "custom" : "default")
+static void apfd_enumerate_post_entry(sapi_post_entry *pe)
+{
+	php_info_print_table_row(3, pe->content_type,
+		CUSTOM_OR_DEFAULT(pe->post_reader, sapi_read_standard_form_data),
+		CUSTOM_OR_DEFAULT(pe->post_handler, php_std_post_handler)
+	);
+}
+
 PHP_MINFO_FUNCTION(apfd)
 {
 	php_info_print_table_start();
-	php_info_print_table_header(2, "apfd support", "enabled");
+	php_info_print_table_header(2, "APFD Support", "enabled");
+	php_info_print_table_row(2, "Extension Version", PHP_APFD_VERSION);
+	php_info_print_table_end();
+	php_info_print_table_start();
+	php_info_print_table_header(3, "Content type", "Reader", "Handler");
+	apfd_enumerate_post_entries(apfd_enumerate_post_entry);
 	php_info_print_table_end();
 }
 

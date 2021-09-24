@@ -100,13 +100,15 @@ PHP_RINIT_FUNCTION(apfd)
 # define TSRMLS_C
 # define TSRMLS_CC
 #endif
+	sapi_request_info *req = &SG(request_info);
+
 	/* populate form data on non-POST requests */
-	if (SG(request_info).request_method && strcasecmp(SG(request_info).request_method, "POST") && SG(request_info).content_type && *SG(request_info).content_type) {
-		char *ct_str, *ct_dup = estrdup(SG(request_info).content_type);
+	if (req->request_method && strcasecmp(req->request_method, "POST") && req->content_type && *req->content_type) {
+		char *ct_str, *ct_dup = estrdup(req->content_type);
 		size_t ct_end = strcspn(ct_dup, ";, ");
 		sapi_post_entry *post_entry = NULL;
 
-		SG(request_info).content_type_dup = ct_dup;
+		req->content_type_dup = ct_dup;
 
 		ct_str = zend_str_tolower_dup(ct_dup, ct_end);
 		if ((post_entry = apfd_get_post_entry(ct_str, ct_end TSRMLS_CC))) {
@@ -114,7 +116,7 @@ PHP_RINIT_FUNCTION(apfd)
 
 			apfd_backup(&apfd TSRMLS_CC);
 
-			SG(request_info).post_entry = post_entry;
+			req->post_entry = post_entry;
 
 			if (post_entry->post_reader) {
 				post_entry->post_reader(TSRMLS_C);
@@ -130,9 +132,9 @@ PHP_RINIT_FUNCTION(apfd)
 		}
 		efree(ct_str);
 
-		if (SG(request_info).content_type_dup) {
-			efree(SG(request_info).content_type_dup);
-			SG(request_info).content_type_dup = NULL;
+		if (req->content_type_dup) {
+			efree(req->content_type_dup);
+			req->content_type_dup = NULL;
 		}
 	}
 

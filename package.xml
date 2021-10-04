@@ -24,9 +24,9 @@ This extension does not provide any INI entries, constants, functions or classes
   <email>mike@php.net</email>
   <active>yes</active>
  </lead>
- <date>2020-09-21</date>
+ <date>2021-10-04</date>
  <version>
-  <release>1.0.2</release>
+  <release>1.0.3</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -35,8 +35,8 @@ This extension does not provide any INI entries, constants, functions or classes
  </stability>
  <license uri="http://copyfree.org/content/standard/licenses/2bsd/license.txt">BSD-2-Clause</license>
  <notes><![CDATA[
-* PHP-7.2+ compatibility
-* PHP-8.0 compatiblity
+* Fix tests for PHP-8.1
+* Improve phpinfo() output
 ]]></notes>
  <contents>
   <dir name="/">
@@ -56,6 +56,7 @@ This extension does not provide any INI entries, constants, functions or classes
      <file role="test" name="001.phpt"/>
      <file role="test" name="002.phpt"/>
      <file role="test" name="003.phpt"/>
+		 <file role="test" name="json_post001.phpt"/>
    </dir>
   </dir>
  </contents>

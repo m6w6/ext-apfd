@@ -10,14 +10,14 @@ on:
 jobs:
 <?php
 
-$cur = "8.0";
+$cur = "8.2";
 $gen = include __DIR__ . "/ci/gen-matrix.php";
 $job = $gen->github([
 "old-matrix" => [
-	"PHP" => ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4"],
+	"PHP" => ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1"],
 	"enable_debug" => "yes",
 	"enable_maintainer_zts" => "yes",
-], 
+],
 "master" => [
 	"PHP" => "master",
 	"enable_debug" => "yes",

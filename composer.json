@@ -1,0 +1,12 @@
+{
+    "name": "m6w6/ext-apfd",
+    "type": "php-ext",
+    "license": "BSD-2-Clause",
+    "description": "Always Populate Form Data",
+    "require": {
+        "php": ">= 5.3.0"
+    },
+    "php-ext": {
+        "extension-name": "apfd"
+    }
+}

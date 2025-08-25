@@ -10,11 +10,11 @@ on:
 jobs:
 <?php
 
-$cur = "8.3";
+$cur = "8.4";
 $gen = include __DIR__ . "/ci/gen-matrix.php";
 $job = $gen->github([
 "old-matrix" => [
-	"PHP" => ["5.6", "7.4", "8.0", "8.1", "8.2"],
+	"PHP" => ["5.6", "7.4", "8.0", "8.1", "8.2", "8.3"],
 	"enable_debug" => "yes",
 	"enable_maintainer_zts" => "yes",
 ],
@@ -67,9 +67,9 @@ foreach ($job as $id => $env) {
 <?php if (isset($env["CFLAGS"]) && strpos($env["CFLAGS"], "--coverage") != false) : ?>
       - name: Coverage
         if: success()
-        run: |
-          cd .libs
-          bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
+        uses: codecov/codecov-action@v5
+        with:
+          directory: src
 <?php endif; ?>
 
 <?php

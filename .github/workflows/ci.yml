@@ -142,6 +142,33 @@ jobs:
         run: |
           make -f scripts/ci/Makefile test
 
+  old-matrix-5:
+    name: old-matrix-5
+    env:
+      PHP: "8.3"
+      enable_debug: "yes"
+      enable_maintainer_zts: "yes"
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install
+        run: |
+          sudo apt-get install -y \
+            php-cli \
+            php-pear \
+            re2c
+      - name: Prepare
+        run: |
+          make -f scripts/ci/Makefile php || make -f scripts/ci/Makefile clean php
+      - name: Build
+        run: |
+          make -f scripts/ci/Makefile ext PECL=apfd
+      - name: Test
+        run: |
+          make -f scripts/ci/Makefile test
+
   master-0:
     name: master-0
     continue-on-error: true
@@ -173,7 +200,7 @@ jobs:
   cur-dbg-zts-0:
     name: cur-dbg-zts-0
     env:
-      PHP: "8.3"
+      PHP: "8.4"
       enable_debug: "yes"
       enable_zts: "yes"
     runs-on: ubuntu-20.04
@@ -200,7 +227,7 @@ jobs:
   cur-dbg-zts-1:
     name: cur-dbg-zts-1
     env:
-      PHP: "8.3"
+      PHP: "8.4"
       enable_debug: "no"
       enable_zts: "yes"
     runs-on: ubuntu-20.04
@@ -227,7 +254,7 @@ jobs:
   cur-dbg-zts-2:
     name: cur-dbg-zts-2
     env:
-      PHP: "8.3"
+      PHP: "8.4"
       enable_debug: "yes"
       enable_zts: "no"
     runs-on: ubuntu-20.04
@@ -254,7 +281,7 @@ jobs:
   cur-dbg-zts-3:
     name: cur-dbg-zts-3
     env:
-      PHP: "8.3"
+      PHP: "8.4"
       enable_debug: "no"
       enable_zts: "no"
     runs-on: ubuntu-20.04
@@ -283,7 +310,7 @@ jobs:
     env:
       CFLAGS: "-O0 -g --coverage"
       CXXFLAGS: "-O0 -g --coverage"
-      PHP: "8.3"
+      PHP: "8.4"
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -306,7 +333,7 @@ jobs:
           make -f scripts/ci/Makefile test
       - name: Coverage
         if: success()
-        run: |
-          cd .libs
-          bash <(curl -s https://codecov.io/bash) -X xcode -X coveragepy
+        uses: codecov/codecov-action@v5
+        with:
+          directory: src
 

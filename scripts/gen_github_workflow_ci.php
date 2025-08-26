@@ -44,7 +44,7 @@ foreach ($job as $id => $env) {
         printf("      %s: \"%s\"\n", $key, $val);
     }
 ?>
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v2
         with:
